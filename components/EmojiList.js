@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, FlatList, Text, Platform, Pressable } from 'react-native';
+import { StyleSheet, FlatList, Text, Platform, Pressable, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import LoadingComponent from './LoadingComponent';
 
 export default function EmojiList({ onSelect, onCloseModal }) {
   const [emojis, setEmojis] = useState([]);
@@ -8,20 +9,24 @@ export default function EmojiList({ onSelect, onCloseModal }) {
   useEffect(() => {
     const fetchEmojis = async () => {
       try {
-        const response = await fetch('https://emoji-api.com/emojis?access_key=cad0ef22e7dba14201b21c09c3101221328feeae');
+        const response = await fetch(
+          'https://emoji-api.com/emojis?access_key=cad0ef22e7dba14201b21c09c3101221328feeae'
+        );
         if (!response.ok) {
           throw new Error('Network response was not ok ' + response.statusText);
         }
         const data = await response.json();
         setEmojis(data);
 
+
         if (Platform.OS === 'web') {
-          localStorage.setItem("Emojis", JSON.stringify(data));
+          localStorage.setItem('Emojis', JSON.stringify(data));
         } else {
-          await AsyncStorage.setItem("Emojis", JSON.stringify(data));
+          await AsyncStorage.setItem('Emojis', JSON.stringify(data));
         }
       } catch (error) {
         console.error('Erreur:', error);
+      } finally {
       }
     };
 
@@ -29,9 +34,9 @@ export default function EmojiList({ onSelect, onCloseModal }) {
       try {
         let storedEmojis;
         if (Platform.OS === 'web') {
-          storedEmojis = localStorage.getItem("Emojis");
+          storedEmojis = localStorage.getItem('Emojis');
         } else {
-          storedEmojis = await AsyncStorage.getItem("Emojis");
+          storedEmojis = await AsyncStorage.getItem('Emojis');
         }
 
         if (storedEmojis) {
@@ -47,6 +52,10 @@ export default function EmojiList({ onSelect, onCloseModal }) {
     loadEmojis();
   }, []);
 
+  if (emojis.length===0) {
+    return <LoadingComponent />;
+  }
+
   return (
     <FlatList
       horizontal
@@ -59,11 +68,11 @@ export default function EmojiList({ onSelect, onCloseModal }) {
           onPress={() => {
             onSelect(item.character);
             onCloseModal();
-          }}>
+          }}
+        >
           <Text style={styles.text}>{item.character}</Text>
         </Pressable>
       )}
-      
     />
   );
 }

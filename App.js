@@ -9,7 +9,7 @@ import { useState,useRef } from 'react';
 import Button from './components/Button';
 import ImageViewer from './components/ImageViewer'; 
 import * as ImagePicker from 'expo-image-picker';
-
+import LoadingComponent from "./components/LoadingComponent";
 import CircleButton from './components/CircleButton';
 import IconButton from './components/IconButton';
 
@@ -52,6 +52,7 @@ export default function App() {
 
   const onReset = () => {
     setShowAppOptions(false);
+    setPickedEmoji(null)
   };
 
   const onAddSticker = () => {
@@ -104,6 +105,7 @@ export default function App() {
        <View style={styles.imageContainer}  ref={imageRef} collapsable={false}>
           <ImageViewer styleOption={styles.imageContainer.contentPlace} selectedImage={selectedImage} placeholderImageSource={PlaceholderImage} />
           {pickedEmoji && <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />}
+          
         </View>
 
 
@@ -121,6 +123,7 @@ export default function App() {
           <Button label="Use this photo" onPress={() => setShowAppOptions(true)} />
         </View>
       )}
+
 
       <EmojiPicker isVisible={isModalVisible} onClose={onModalClose}>
         <EmojiList onSelect={setPickedEmoji} onCloseModal={onModalClose} />
