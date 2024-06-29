@@ -1,0 +1,45 @@
+{
+    "build": {
+      "development": {
+        "workflow": "managed",
+        "distribution": "internal",
+        "android": {
+          "buildType": "debug"
+        },
+        "ios": {
+          "buildType": "development"
+        }
+      },
+      "preview": {
+        "workflow": "managed",
+        "distribution": "internal",
+        "android": {
+          "buildType": "release"
+        },
+        "ios": {
+          "buildType": "release"
+        }
+      },
+      "production": {
+        "workflow": "managed",
+        "distribution": "store",
+        "android": {
+          "buildType": "release"
+        },
+        "ios": {
+          "buildType": "release"
+        }
+      }
+    },
+    "submit": {
+      "android": {
+        "serviceAccountKeyPath": "./path/to/your/android-service-account-key.json",
+        "track": "production"
+      },
+      "ios": {
+        "appleId": "your-apple-id@example.com",
+        "ascAppId": "your-app-store-connect-app-id"
+      }
+    }
+  }
+  
